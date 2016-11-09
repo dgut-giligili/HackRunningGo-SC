@@ -80,7 +80,7 @@ def getOriginalJson(roomId,headers):
     url = 'http://gxapp.iydsj.com/api/v3/get/'+ str(roomId) + '/history/finished/record '
     Session = requests.Session()
     Request = Session.get(url, headers=headers)
-    return Request.content
+    return Request.content.decode('utf-8')
 
 MAX_DISTANCE = 20
 
@@ -116,16 +116,16 @@ def createFivePointsStr(points):
     outdata.writelines(tpData)
 
 
-    print tpData
+    print(tpData)
 
 
 def getRoomIdJson(headers):
     url = 'http://gxapp.iydsj.com/api/v3/get/aboutrunning/list/0/901/3'
     Session = requests.Session()
     Request = Session.get(url, headers=headers)
-    reqDate = Request.content
-    print reqDate
-    s = json.loads(Request.content)
+    reqDate = Request.content.decode('utf-8')
+    print(reqDate)
+    s = json.loads(Request.content.decode('utf-8'))
     output = open('route.data', 'w')
     cnt = 0
     for item in s["data"]:
@@ -142,7 +142,7 @@ def getRoomIdJson(headers):
         if (len(run_data_str) > 0):
             # print cnt + 1
             cnt = cnt + 1
-            print ("Updating " + str(cnt) + " running groups data. ")
+            print(("Updating " + str(cnt) + " running groups data. "))
             output.write(run_data_str[0] + '\n')
 
             run_points_str = re.findall(r'\\\"lat\\\"\:\\\"\d+.\d+\\\",\\\"lng\\"\:\\\"\d+.\d+\\\"', run_data_str[0])

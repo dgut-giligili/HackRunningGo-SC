@@ -26,13 +26,13 @@ for route in routes:
 tot_cnt = len(routes)
 
 def base16encode(username):
-    return str(base64.b16encode(username))
+    return base64.b16encode(username.encode('utf-8')).decode('utf-8')
 
 def base64encode(username, pwd):
     list = [username, pwd]
     sign = ':'
     strr = sign.join(list)
-    return "Basic " + str(base64.b64encode(strr))
+    return "Basic " + base64.b64encode(strr.encode('utf-8')).decode('utf-8')
 
 def virtualDevicedId(username):
     fi = base16encode(username)
@@ -97,7 +97,7 @@ def login(username, pwd):
 
     Session = requests.Session()
     Request = Session.post(url, headers = headers)
-    reqData = Request.content
+    reqData = Request.content.decode('utf-8')
     print (reqData)
     dicData = json.loads(reqData)
     uid = dicData['data']['uid']
@@ -118,7 +118,7 @@ def dataUpload(username, pwd, uid):
     index = 0
     while index == 0:
         index = selectRoute()
-    print ("Use " + str(index) + " data")
+    print(("Use " + str(index) + " data"))
 
     thisdata, st, et = format(routes[index], tots[index])
 
@@ -134,8 +134,8 @@ def dataUpload(username, pwd, uid):
     speed_str =  "%.2f" % (speed)
     totDis_str = "%.2f" % (totDis)
 
-    print speed_str
-    print totDis_str
+    print(speed_str)
+    print(totDis_str)
 
     postjson = {
         "allLocJson":thisdata,
@@ -154,7 +154,7 @@ def dataUpload(username, pwd, uid):
     }
     Session = requests.Session()
     Request = Session.post(url, headers = headers, data=json.dumps(postjson))
-    print (Request.content)
+    print((Request.content.decode('utf-8')))
 
 def logout(username, pwd):
     url = 'http://gxapp.iydsj.com/api/v2/user/logout'
@@ -175,7 +175,7 @@ def logout(username, pwd):
 
     Session = requests.Session()
     Request = Session.post(url, headers = headers)
-    print Request.content
+    print(Request.content.decode('utf-8'))
 
 def writeByData():
     file = open('user.data', 'r')
@@ -190,7 +190,7 @@ def writeByData():
     # for l in line:
     #     user, pwd = l.split(' ')
     #     print (base64encode(user, pwd))
-    print line
+    print(line)
     file.close()
     return line
 
@@ -201,15 +201,15 @@ def main():
     # format(routes[index], 100)
     for u in users:
         username, password = u.split(' ')
-        print username, password
-        print "Start : %s" % time.ctime()
+        print(username, password)
+        print("Start : %s" % time.ctime())
         logout(username, password)  
 
         uid = login(username, password)
         dataUpload(username, password, uid)
         logout(username, password)
         sleeptime = random.randint(20, 120)
-        print "Sleep %d seconds" % sleeptime
+        print("Sleep %d seconds" % sleeptime)
         time.sleep(sleeptime)
 
 if __name__== '__main__':
