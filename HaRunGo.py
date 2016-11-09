@@ -115,27 +115,39 @@ def dataUpload(username, pwd, uid):
         "uid": str(uid),
         "Authorization": base64encode(username, pwd),
     }
+
     index = 0
-    while index == 0:
-        index = selectRoute()
-    print(("Use " + str(index) + " data"))
+    thisdata, st, et, speed_str, totDis_str = "", "", "", "", ""
 
-    thisdata, st, et = format(routes[index], tots[index])
+    is_like = False
+    while not is_like:
+        index = 0
+        while index == 0:
+            index = selectRoute()
+        print(("Use " + str(index) + " data"))
 
-    # print thisdata
-    totDisA = re.findall(r'\\\"totalDis\\\"\:\\\"(\d+.\d+)\\\"', thisdata)
+        thisdata, st, et = format(routes[index], tots[index])
 
-    totDis = float(totDisA[len(totDisA) - 1]) / 1000
-    # print totDis, tots[index]
+        # print thisdata
+        totDisA = re.findall(r'\\\"totalDis\\\"\:\\\"(\d+.\d+)\\\"', thisdata)
 
-    speed = random.uniform(5, 7)
-    # print speed
+        totDis = float(totDisA[len(totDisA) - 1]) / 1000
+        # print totDis, tots[index]
 
-    speed_str =  "%.2f" % (speed)
-    totDis_str = "%.2f" % (totDis)
+        speed = random.uniform(5, 7)
+        # print speed
 
-    print(speed_str)
-    print(totDis_str)
+        speed_str = "%.2f" % (speed)
+        totDis_str = "%.2f" % (totDis)
+
+        print("Speed: " + speed_str + "km/h")
+        print("Distance: " + totDis_str + "km")
+
+        answer = input("Do you like this route (Y/N):")
+        if answer.upper().startswith("Y"):
+            is_like = True
+        else:
+            is_like = False
 
     postjson = {
         "allLocJson":thisdata,
