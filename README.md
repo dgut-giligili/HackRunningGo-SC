@@ -19,7 +19,7 @@ We hope our school to make a better app, it includes **encrypted transmission in
 
 ## Operating environment
 
-You need to install `python 2.7`. 
+You need to install `python 3.5`. 
 And we recommend you to use `terminal` or `bash` in Linux, `item` in macOS and `powershell` in Windows.
 
 ## Flow
